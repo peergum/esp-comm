@@ -6,6 +6,16 @@ I created it in order not to keep reinventing the wheel each time a project need
 
 Most of the code is mine, possibly occasionally flawed, and UPnP is adapted from [TinyUPnP](https://github.com/ofekp/TinyUPnP) which was initially written for the Arduino framework.
 
+<hr/>
+
+## Preamble
+
+**This component is written for the ESP-IDF framework, version 5.0 and above**.
+
+Please don't ask to make it work for versions under 5.0, I have no time for that at this point. If anyone wants to create and maintain a branch for previous versions of the framework, feel free to do it, but it will be a constant work porting the new features and kind of backward IMHO.
+
+<hr/>
+
 ## Setup and usage
 
 ### Component installation
@@ -26,13 +36,13 @@ Additionally these classes can be of use, depending:
 
 ## Manual/Documentation
 
-(Coming soon)
+(Coming soon, possibly as a wiki)
 
 ## Examples
 
 You can compile the example project right inside the example/basic folder (it uses a relative link to the component itself, using the _extra_component_dirs_ directive in the top _CMakeLists.txt_ file)
 
-## TO DO / Coming ASAP
+## To Do / Coming Soon...
 
 - TCP Server -> 0% (should be easy though)
 - UDP Server -> 0% (should be easy too)
@@ -40,6 +50,7 @@ You can compile the example project right inside the example/basic folder (it us
 - File Server -> 95% (needs a few changes)
 - Firmware Updater -> 95% (needs a few changes)
 - Captive Portal -> 90% (assemble the elements above to build a simple portal )
+- Documentation
   
 ## Pending Issues
 
