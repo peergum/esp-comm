@@ -1,3 +1,5 @@
+<img src="pictures/esp-comm-logo.png" width="200" alt="esp-comm logo"/>
+
 # esp-comm
 
 This component is a collection of objects to ease Wifi comms in projects.
