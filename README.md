@@ -1,8 +1,6 @@
 <img src="pictures/esp-comm-logo.png" width="200" alt="esp-comm logo"/>
 
-# esp-comm
-
-This component is a collection of objects to ease Wifi comms in projects.
+This component is a collection of objects to ease Wifi comms in projects. It's using the ESP-IDF Framework from Espressif, but this code is not connected to the Espressif company otherwise. I'm a big fan and user of ESP chips, but that's all.
 
 I created it in order not to keep reinventing the wheel each time a project needs IP features over Wifi, like a tiny web interface to set up a wifi password, TCP or UDP clients, UPnP, etc...
 
