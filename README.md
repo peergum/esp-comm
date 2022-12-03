@@ -6,10 +6,28 @@ I created it in order not to keep reinventing the wheel each time a project need
 
 Most of the code is mine, possibly occasionally flawed, and UPnP is adapted from TinyUPnP.
 
-## Installation
+## Setup and usage
 
-(To do)
+### Component installation
+
+Clone the repository in the _components_ folder in your project, or add it there as a submodule, then add _esp-comm_ under the _REQUIRES_ directives
+
+### Usage
+
+Use the following classes as required:
+- TCPClient
+- UDPClient
+- UPnP
+- Wifi
+  
+Additionally these classes can be of use, depending:
+- IPAddress
+- Timer
+
+## Manual/Documentation
+
+(Coming soon)
 
 ## Examples
 
-(To do)
+You can compile the example project right inside the example/basic folder (it uses a relative link to the component itself, using the _extra_component_dirs_ directive in the top _CMakeLists.txt_ file)
