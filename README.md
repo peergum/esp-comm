@@ -34,8 +34,8 @@ You can compile the example project right inside the example/basic folder (it us
 
 ## TO DO / Coming ASAP
 
-- TCP Server -> 0%
-- UDP Server
+- TCP Server -> 0% (should be easy though)
+- UDP Server -> 0% (should be easy too)
 - Web Server (with APIs/dynamic pages) -> 90% (needs some retouching)
 - File Server -> 95% (needs a few changes)
 - Firmware Updater -> 95% (needs a few changes)
