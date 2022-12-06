@@ -1,0 +1,16 @@
+{
+  "framework": "https://github.com/espressif/esp-idf"
+  "branch": "release/v5.0", 
+  "commit": "75c3a69",
+  "components": [
+    "nvs_flash",
+    "esp_wifi",
+	"esp_rom",
+	"esp_http_client",
+	"esp-tls",
+	"mbedtls",
+	"json",
+	"esp_netif",
+	"esp_common"
+   ]
+}
