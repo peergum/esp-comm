@@ -5,4 +5,3 @@ dependencies:
 description: PeerGum's Communication Component
 documentation: https://github.com/peergum/esp-comm/wiki
 url: https://github.com/peergum/esp-comm
-namespace: peergum
