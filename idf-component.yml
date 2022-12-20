@@ -1,0 +1,14 @@
+dependencies:
+  idf:
+    version: '>=5.0'
+description: PeerGum's Communication Component
+documentation: https://github.com/peergum/esp-comm/wiki
+targets:
+- esp32
+- esp32s2
+- esp32s3
+- esp32c2
+- esp32c3
+- esp32h2
+url: https://github.com/peergum/esp-comm
+version: 1.0.0

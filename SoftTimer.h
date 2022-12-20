@@ -1,5 +1,5 @@
 /**
- * @file Timer.h
+ * @file SoftTimer.h
  * @author Phil Hilger (phil@peergum.com)
  * @brief 
  * @version 0.1
@@ -9,13 +9,13 @@
  * 
  */
 
-#ifndef __TIMER_H_
-#define __TIMER_H_
+#ifndef __SOFTTIMER_H_
+#define __SOFTTIMER_H_
 
-class Timer {
+class SoftTimer {
 public:
-  Timer();
-  ~Timer();
+  SoftTimer();
+  ~SoftTimer();
   bool check(unsigned long ms);
   void reset(void);
 
@@ -23,4 +23,4 @@ public:
   unsigned long _timer;
 };
 
-#endif  // __TIMER_H_
+#endif  // __SOFTTIMER_H_

@@ -1,12 +1,12 @@
 /**
  * @file utils.c
  * @author Phil Hilger (phil@peergum.com)
- * @brief 
+ * @brief
  * @version 0.1
  * @date 2022-11-05
- * 
+ *
  * Copyright (c) 2022, PeerGum
- * 
+ *
  */
 
 #include "utils.h"
@@ -39,6 +39,24 @@ unsigned long micros() {
 void delay(unsigned long ms) { vTaskDelay(pdMS_TO_TICKS(ms)); }
 
 void delayMicroseconds(unsigned long us) { usleep(us); }
+
+char *urlEncode(const char *text) {
+  static char encoded[256];
+  int pos = 0;
+  for (int i = 0; i < strlen(text) && pos < 255; i++) {
+    switch(text[i]) {
+      case '&':
+        strcat(encoded, "&amp;");
+        pos = strlen(encoded);
+        break;
+      default:
+        encoded[pos++] = text[i];
+        encoded[pos] = 0;
+        break;
+    }
+  }
+  return encoded;
+}
 
 #ifdef __cplusplus
 uint16_t makeWord(uint16_t w) { return w; }

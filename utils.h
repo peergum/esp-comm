@@ -12,6 +12,8 @@
 #ifndef __UTILS_H__
 #define __UTILS_H__
 
+#include "stdint.h"
+
 #define lowByte(w) ((uint8_t)((w)&0xff))
 #define highByte(w) ((uint8_t)((w) >> 8))
 
@@ -26,7 +28,6 @@
 #define bit(b) (1UL << (b))
 #endif
 
-#include "stdint.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -34,6 +35,7 @@ unsigned long millis(void);
 unsigned long micros(void);
 void delay(unsigned long);
 void delayMicroseconds(unsigned int us);
+char* urlEncode(const char* text);
 }
 #endif
 

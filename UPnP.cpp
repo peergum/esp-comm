@@ -12,7 +12,7 @@
  */
 
 #include "UPnP.h"
-#include "Timer.h"
+#include "SoftTimer.h"
 #include <string>
 
 static const char *TAG = "UPnP";
@@ -127,7 +127,7 @@ portMappingResult UPnP::commitPortMappings() {
     return NETWORK_ERROR;
   }
 
-  Timer t;
+  SoftTimer t;
   // get all the needed IGD information using SSDP if we don't have it already
   if (!isGatewayInfoValid(&_gwInfo)) {
     getGatewayInfo(&_gwInfo);
@@ -222,7 +222,7 @@ portMappingResult UPnP::commitPortMappings() {
 }
 
 bool UPnP::getGatewayInfo(gatewayInfo *deviceInfo) {
-  Timer t;
+  SoftTimer t;
   while (!connectUDP()) {
     if (_timeoutMs > 0 && t.check(_timeoutMs)) {
       ESP_LOGD(TAG, "Timeout expired while connecting UDP");
@@ -365,7 +365,7 @@ portMappingResult UPnP::updatePortMappings(unsigned long intervalMs,
 }
 
 bool UPnP::testConnectivity() {
-  Timer t;
+  SoftTimer t;
   ESP_LOGI(TAG, "Testing wifi connection for [%s]", wifi.localIP().toChar());
   while (wifi.status() != CONNECTED) {
     if (_timeoutMs > 0 && t.check(_timeoutMs)) {
@@ -482,7 +482,7 @@ bool UPnP::applyActionOnSpecificPortMapping(SOAPAction *soapAction,
 
   // connect to IGD (TCP connection) again, if needed, in case we got
   // disconnected after the previous query
-  Timer t;
+  SoftTimer t;
   if (!_tcpClient.connected()) {
     while (!connectToIGD(deviceInfo->host, deviceInfo->actionPort)) {
       if (t.check(TCP_CONNECTION_TIMEOUT_MS)) {
@@ -608,7 +608,7 @@ ssdpDeviceNode *UPnP::listSsdpDevices() {
     return NULL;
   }
 
-  Timer t;
+  SoftTimer t;
   while (!connectUDP()) {
     if (_timeoutMs > 0 && t.check(_timeoutMs)) {
       ESP_LOGD(TAG, "Timeout expired while connecting UDP");
@@ -846,7 +846,7 @@ bool UPnP::getIGDEventURLs(gatewayInfo *deviceInfo) {
 
   _tcpClient.write(buffer, strlen(buffer));
 
-  Timer t;
+  SoftTimer t;
   // wait for the response
   while (_tcpClient.available() == 0) {
     if (t.check(TCP_CONNECTION_TIMEOUT_MS)) {
@@ -942,7 +942,7 @@ bool UPnP::addPortMappingEntry(gatewayInfo *deviceInfo, upnpRule *rule_ptr) {
 
   // connect to IGD (TCP connection) again, if needed, in case we got
   // disconnected after the previous query
-  Timer t;
+  SoftTimer t;
   if (!_tcpClient.connected()) {
     while (!connectToIGD(_gwInfo.host, _gwInfo.actionPort)) {
       if (t.check(TCP_CONNECTION_TIMEOUT_MS)) {
@@ -1042,7 +1042,7 @@ bool UPnP::printAllPortMappings() {
 
   bool reachedEnd = false;
   int index = 0;
-  Timer t;
+  SoftTimer t;
   while (!reachedEnd) {
     // connect to IGD (TCP connection) again, if needed, in case we got
     // disconnected after the previous query
