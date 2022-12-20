@@ -11,4 +11,4 @@ targets:
 - esp32c3
 - esp32h2
 url: https://github.com/peergum/esp-comm
-version: 1.0.0
+version: 0.1.0
