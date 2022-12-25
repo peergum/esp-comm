@@ -114,6 +114,7 @@ void Config::getFromNVS() {
       switch (_items[i].type) {
         case CONFIG_CHAR:
         case CONFIG_INFO:
+        case CONFIG_LIST:
           err = nvs_get_blob(h_nvs, _items[i].name, cData, &len);
           switch (err) {
             case ESP_OK:
@@ -183,7 +184,7 @@ void Config::putToNVS() {
           }
           break;
         case CONFIG_INFO:
-            // pure information (not saved)
+            // pure information for display only (not saved)
             break;
         default:
           err = nvs_set_u32(h_nvs, _items[i].name, _items[i].value);

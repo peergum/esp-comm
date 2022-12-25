@@ -9,8 +9,7 @@
  *
  */
 
-#include "TCPClient.h"
-#include "IPAddress.h"
+#include "Wifi.h"
 #include "esp_netif.h"
 #include "lwip/err.h"
 #include "lwip/sockets.h"
@@ -19,6 +18,7 @@
 #include "lwip/netdb.h"
 #include "lwip/dns.h"
 #include "esp_log.h"
+#include "TCPClient.h"
 
 static const char *TAG = "TCPClient";
 

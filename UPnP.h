@@ -15,26 +15,10 @@
 #ifndef __UPNP_H_
 #define __UPNP_H_
 
-// #include <Arduino.h>
-// #include <WiFiUdp.h>
-// #include <WiFiClient.h>
-// #include <limits.h>
-
-// #include <char *>
 #include "IPAddress.h"
-#include "Wifi.h"
-// #include <cchar *>
-#include "esp_log.h"
 #include "utils.h"
 #include "TCPClient.h"
 #include "UDPClient.h"
-
-// #define F(char *) char *
-// #define PSTR(char *) char *
-// #define strcpy_P strcpy
-// #define strcat_P strcat
-
-// typedef std::char * char *;
 
 #define UPNP_DEBUG
 #define UPNP_SSDP_PORT 1900
@@ -137,7 +121,7 @@ typedef enum {
 
 class UPnP {
  public:
-  UPnP(unsigned long timeoutMs);
+  UPnP(unsigned long timeoutMs = 20000UL);
   ~UPnP();
   // when the ruleIP is set to the current device IP, the IP of the rule will
   // change if the device changes its IP this makes sure the traffic will be

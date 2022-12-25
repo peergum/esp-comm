@@ -37,6 +37,7 @@ void delay(unsigned long);
 void delayMicroseconds(unsigned int us);
 char* urlEncode(const char* text);
 }
+
 #endif
 
 #ifdef __cplusplus

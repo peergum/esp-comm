@@ -13,7 +13,6 @@
 #define __TCPCLIENT_H_
 
 #include "IPAddress.h"
-#include "Wifi.h"
 #include "utils.h"
 #include <string>
 

@@ -44,7 +44,7 @@ char *urlEncode(const char *text) {
   static char encoded[256];
   int pos = 0;
   for (int i = 0; i < strlen(text) && pos < 255; i++) {
-    switch(text[i]) {
+    switch (text[i]) {
       case '&':
         strcat(encoded, "&amp;");
         pos = strlen(encoded);

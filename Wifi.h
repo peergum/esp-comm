@@ -15,13 +15,11 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "freertos/event_groups.h"
-#include "esp_wifi.h"
 #include "IPAddress.h"
-#include "netdb.h"
-#include "esp_mac.h"
 #include "SoftTimer.h"
 #include "common.h"
-#include "sntp.h"
+#include "utils.h"
+#include "UPnP.h"
 
 #define WIFI_MIN_RSSI -107
 
@@ -34,11 +32,19 @@ typedef enum {
   AP_DISCONNECTED
 } WifiStatus;
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 extern bool resolve(const char *hostname, IPAddress &ip);
 extern void parseUrl(const char *url, char *protocol, char *hostname,
                      char *port, char *path);
 extern uint16_t protocolToPort(const char *protocol);
 extern void ssidList(int &num, char ***labels, char ***values);
+
+#ifdef __cplusplus
+}
+#endif
 
 class Wifi {
  public:
@@ -71,7 +77,7 @@ class Wifi {
   void switchToSTA(void);
 
   void ssidList(int &cnt, char ***labels, char ***values);
- 
+
   void initialize_sntp(void);
 
   bool isSTAConnected();
@@ -81,8 +87,13 @@ class Wifi {
 
   WifiStatus status(void);
 
-  void event_handler(void *arg, esp_event_base_t event_base,
-                            int32_t event_id, void *event_data);
+  void event_handler(void *arg, esp_event_base_t event_base, int32_t event_id,
+                     void *event_data);
+
+  void addPortMappingConfig(int rulePort, const char *ruleProtocol,
+                            int ruleLeaseDuration,
+                            const char *ruleFriendlyName);
+  void checkUPnPMappings(void);
 
  private:
   static Wifi *_instance;
@@ -109,6 +120,10 @@ class Wifi {
   wifi_ap_record_t _apInfo[WIFI_SCAN_LIST_SIZE];
   void (*_startCB)(void) = NULL;
   void (*_stopCB)(void) = NULL;
+  UPnP upnp;
+  SoftTimer upnpTimer;
+  bool newMapping = false;
+  int mappingTestCnt = 0;
 };
 
 extern Wifi wifi;

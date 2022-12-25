@@ -16,7 +16,11 @@
 #include "UPnP.h"
 #include "arpa/inet.h"
 #include "esp_netif.h"
+#include "esp_wifi.h"
 #include "netdb.h"
+#include "esp_mac.h"
+#include "sntp.h"
+#include "UPnP.h"
 
 /* FreeRTOS event group to signal when we are connected*/
 
@@ -30,6 +34,24 @@
 #define AP_DISCONNECTED_BIT BIT3
 
 static const char *TAG = "Wifi";
+
+
+void wifiTask(void *arg) {
+  wifi_mode_t startMode = *(wifi_mode_t *)(arg);
+  wifi.init();
+  wifi.scanSTA();
+  wifi.start(startMode);
+  while (true) {
+    wifi.checkUPnPMappings();
+    vTaskDelay(pdMS_TO_TICKS(50));
+  }
+  wifi.stop();
+}
+
+static void wifiEventHandler(void *arg, esp_event_base_t event_base,
+                             int32_t event_id, void *event_data) {
+  wifi.event_handler(arg, event_base, event_id, event_data);
+}
 
 /**
  * @brief
@@ -142,21 +164,6 @@ uint16_t protocolToPort(const char *protocol) {
   return 0;
 }
 
-void wifiTask(void *arg) {
-  wifi.init();
-  wifi.scanSTA();
-  wifi.start(WIFI_MODE_AP);
-  while (true) {
-    vTaskDelay(pdMS_TO_TICKS(50));
-  }
-  wifi.stop();
-}
-
-static void wifiEventHandler(void *arg, esp_event_base_t event_base,
-                             int32_t event_id, void *event_data) {
-  wifi.event_handler(arg, event_base, event_id, event_data);
-}
-
 void ssidList(int &num, char ***labels, char ***values) {
   wifi.ssidList(num, labels, values);
 }
@@ -259,6 +266,7 @@ bool Wifi::start(wifi_mode_t mode) {
   }
   ESP_LOGI(TAG, "wifi started.");
 
+  _wifiStarted = true;
   _startCB();  // short callback function
 
   return true;
@@ -282,30 +290,34 @@ bool Wifi::isAPDisconnected() {
 
 void Wifi::event_handler(void *arg, esp_event_base_t event_base,
                          int32_t event_id, void *event_data) {
-  // if (event_base == WIFI_EVENT && event_id == WIFI_EVENT_STA_START) {
-  //   esp_wifi_connect();
-  // } else if (event_base == WIFI_EVENT &&
-  //            event_id == WIFI_EVENT_STA_DISCONNECTED) {
-  //   if (_retry_num < CONFIG_ESP_MAXIMUM_RETRY) {
-  //     esp_wifi_connect();
-  //     _retry_num++;
-  //     ESP_LOGI(TAG, "retry to connect to the AP");
-  //   } else {
-  //     xEventGroupSetBits(wifi_event_group, WIFI_FAIL_BIT);
-  //   }
-  //   ESP_LOGI(TAG, "connect to the AP fail");
-  //   _wifistate = DISCONNECTED;
-  // } else if (event_base == IP_EVENT && event_id == IP_EVENT_STA_GOT_IP) {
-  //   ip_event_got_ip_t *event = (ip_event_got_ip_t *)event_data;
-  //   _localIP = event->ip_info.ip.addr;
-  //   _gatewayIP = event->ip_info.gw.addr;
-  //   ESP_LOGI(TAG, "got ip: %s gw: %s", _localIP.toChar(),
-  //            _gatewayIP.toChar());
-  //   _retry_num = 0;
-  //   xEventGroupSetBits(wifi_event_group, WIFI_CONNECTED_BIT);
-  //   _wifistate = CONNECTED;
-  // }
   if (event_base == WIFI_EVENT && event_id == WIFI_EVENT_STA_START) {
+    esp_wifi_connect();
+    _retry_num = 0;
+  } else if (event_base == WIFI_EVENT &&
+             (event_id == WIFI_EVENT_STA_DISCONNECTED ||
+              event_id == WIFI_EVENT_STA_BEACON_TIMEOUT)) {
+    _wifiState = DISCONNECTED;
+    if (_retry_num < CONFIG_ESP_MAXIMUM_RETRY) {
+      esp_wifi_connect();
+      _retry_num++;
+      ESP_LOGI(TAG, "retry to connect to the AP");
+    } else {
+      xEventGroupSetBits(_wifiEventGroup, WIFI_FAILED_BIT);
+      _wifiState = WIFI_INCORRECT;
+    }
+    ESP_LOGI(TAG, "connect to the AP fail");
+    _wifiState = DISCONNECTED;
+  } else if (event_base == IP_EVENT && event_id == IP_EVENT_STA_GOT_IP) {
+    ip_event_got_ip_t *event = (ip_event_got_ip_t *)event_data;
+    _localIP = event->ip_info.ip.addr;
+    _gatewayIP = event->ip_info.gw.addr;
+    ESP_LOGI(TAG, "got ip: %s gw: %s", _localIP.toChar(),
+             _gatewayIP.toChar());
+    _retry_num = 0;
+    xEventGroupSetBits(_wifiEventGroup, WIFI_CONNECTED_BIT);
+    _wifiState = CONNECTED;
+  }
+/*   if (event_base == WIFI_EVENT && event_id == WIFI_EVENT_STA_START) {
     esp_wifi_connect();
     _retry_num = 0;
   } else if (event_base == WIFI_EVENT &&
@@ -327,7 +339,7 @@ void Wifi::event_handler(void *arg, esp_event_base_t event_base,
     _retry_num = 0;
     xEventGroupSetBits(_wifiEventGroup, WIFI_CONNECTED_BIT);
     _wifiState = CONNECTED;
-  } else if (event_base == WIFI_EVENT &&
+  }  */else if (event_base == WIFI_EVENT &&
              event_id == WIFI_EVENT_AP_STACONNECTED) {
     wifi_event_ap_staconnected_t *event =
         (wifi_event_ap_staconnected_t *)event_data;
@@ -473,6 +485,7 @@ void Wifi::switchToSTA() {
     esp_wifi_stop();
   }
 
+
   strcpy((char *)wifiSTAConfig.sta.ssid, _SSID);
   strcpy((char *)wifiSTAConfig.sta.password, _passwd);
   wifiSTAConfig.sta.channel = 0;
@@ -546,5 +559,26 @@ IPAddress &Wifi::localIP() { return _localIP; }
 IPAddress &Wifi::gatewayIP() { return _gatewayIP; }
 
 WifiStatus Wifi::status() { return _wifiState; }
+
+void Wifi::addPortMappingConfig(int rulePort, const char *ruleProtocol,
+                         int ruleLeaseDuration, const char *ruleFriendlyName) {
+  upnp.addPortMappingConfig(localIP(), rulePort, ruleProtocol,
+                            ruleLeaseDuration, ruleFriendlyName);
+  newMapping = true;
+  mappingTestCnt = 0;
+}
+
+void Wifi::checkUPnPMappings(void) {
+  if (newMapping && upnpTimer.check(30000UL)) {
+    portMappingResult portMappingAdded;
+    portMappingAdded = upnp.commitPortMappings();
+    mappingTestCnt++;
+
+    if (portMappingAdded == SUCCESS || portMappingAdded == ALREADY_MAPPED || mappingTestCnt>3) {
+      newMapping = false;
+      upnp.printAllPortMappings();
+    }
+  }
+}
 
 Wifi wifi;

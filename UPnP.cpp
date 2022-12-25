@@ -11,9 +11,13 @@
  *
  */
 
-#include "UPnP.h"
+#include "Wifi.h"
 #include "SoftTimer.h"
 #include <string>
+#include "esp_log.h"
+#include <cstring>
+#include "esp_log.h"
+#include "UPnP.h"
 
 static const char *TAG = "UPnP";
 
@@ -74,7 +78,7 @@ void replace(std::string str, const char *str1, const char *str2) {
 
 // timeoutMs - timeout in milli seconds for the operations of this class, 0 for
 // blocking operation
-UPnP::UPnP(unsigned long timeoutMs = 20000) {
+UPnP::UPnP(unsigned long timeoutMs) {
   _timeoutMs = timeoutMs;
   _lastUpdateTime = 0;
   _consecutiveFails = 0;
@@ -200,6 +204,7 @@ portMappingResult UPnP::commitPortMappings() {
     }
 
     currNode = currNode->next;
+    vTaskDelay(pdMS_TO_TICKS(100));
   }
 
   _tcpClient.close();
