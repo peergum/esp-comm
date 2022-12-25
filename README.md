@@ -25,10 +25,12 @@ Clone the repository in the _components_ folder in your project, or add it there
 ### Usage
 
 Use the following classes as required:
+- Wifi
+- CaptivePortal
+- WebServer (includes APIs, Firmware Updates...)
 - TCPClient
 - UDPClient
-- UPnP
-- Wifi
+- UPnP (through Wifi class)
   
 Additionally these classes can be of use, depending:
 - IPAddress
@@ -36,7 +38,7 @@ Additionally these classes can be of use, depending:
 
 ## Manual/Documentation
 
-(Coming soon, possibly as a wiki)
+See [wiki](/peergum/esp-comm/wiki)
 
 ## Examples
 
@@ -46,8 +48,8 @@ You can compile the example project right inside the example/basic folder (it us
 
 - TCP Server -> 0% (should be easy though)
 - UDP Server -> 0% (should be easy too)
-- Web Server (with APIs/dynamic pages) -> 90% (needs some retouching)
-- File Server -> 95% (needs a few changes)
+- Web Server (with APIs/dynamic pages) -> done
+- File Server -> done
 - Firmware Updater -> 95% (needs a few changes)
 - Captive Portal -> 90% (assemble the elements above to build a simple portal )
 - Documentation
