@@ -12,8 +12,13 @@
 #ifndef __COMMON_H
 #define __COMMON_H
 
-#define FAT_MOUNT_POINT "/fat"
+#ifndef MIN
+#define MIN(a,b) ((a)<(b)?(a):(b))
+#endif
 
-#define DEFAULT_SCAN_LIST_SIZE 16
+#define FAT_MOUNT_POINT "/fat"
+#define WIFI_SCAN_LIST_SIZE 16
+#define WIFI_MAXIMUM_RETRY 3
+#define WIFI_MAX_AP_CONNECTIONS 4
 
 #endif // __COMMON_H
