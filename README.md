@@ -38,7 +38,7 @@ Additionally these classes can be of use, depending:
 
 ## Manual/Documentation
 
-See [wiki](/peergum/esp-comm/wiki)
+See [wiki](https://github.com/peergum/esp-comm/wiki)
 
 ## Examples
 
