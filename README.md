@@ -73,7 +73,7 @@ I'm currently working alone on this, on my spare time. If you want to help, here
 - Donate? I haven't setup anything yet, but I will. In the meantime:
   - Listen to my music (search for _PeerGum_ on Spotify, Apple Music, Youtube Music, etc... ). Every listen brings me a tiny fraction of a cent. Better than nothing :D
   - Send crypto (confirm rates before depositing - **values under minimum crypto will be lost**):
-  
+
     <table>
     <tr><th>Crypto</th><th>Address</th><th align="center">Min.Amount</th><th align="center">~ Rates Dec.28, 2022</tr>
     <tr><td>ETH/ERC-20</td><td>0x989f7290d5227d9d6451ab813900f1feb8a11c7b</td><td align="center">0.00001</td><td align="center">1 ETH ~ USD 1,190</td></tr>
@@ -83,5 +83,5 @@ I'm currently working alone on this, on my spare time. If you want to help, here
     <tr><td>DASH</td><td>XoxPsd6U2xVG7gBzirpuWDbDtq5bfHdDbE</td><td align="center">0.01</td><td align="center">1 DASH ~ USD 43</td></tr>
     </table>
 
-- Send me a virtual coffee (I like virtual Mint Tea or Chai too)
+  - Send me a virtual coffee (I like virtual Mint Tea or Chai too)
   - Be happy and enjoy using the code.
