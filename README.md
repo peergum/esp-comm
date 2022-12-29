@@ -66,13 +66,22 @@ Please open relevant issues, with details. Priorities as:
 ## Help, anyone?
 
 I'm currently working alone on this, on my spare time. If you want to help, here's how:
+
 - Help fix/extend/improve code, by submitting a pull request
 - You could prefer to fork your own repo. That's fine with me, but don't come whining if this one keeps getting better and better ;-P You can be a team player, or not. Your choice, not mine. Also, sometimes people opinions and choices diverge, that's life ;)
 - Star this repo to make it more "reputable"
 - Donate? I haven't setup anything yet, but I will. In the meantime:
   - Listen to my music (search for _PeerGum_ on Spotify, Apple Music, Youtube Music, etc... ). Every listen brings me a tiny fraction of a cent. Better than nothing :D
-  - Send ETH (or ERC-20) crypto to 0x989f7290d5227d9d6451ab813900f1feb8a11c7b (min. 0.00001 ETH)
-  - Send BTC crypto to 3AAQHy983Bc9dYZ9WSrehKtg3fxGx3HEKe (Bitcoin Network, min. 0.00010 BTC)
-  - Send LTC crypto to LYiDAwKN3xUeTqWNYnVThTtYgPNbKBDfcD (Litecoin Network, min. 0.01000 LTC)
-  - Send me a virtual coffee (I like virtual Mint Tea or Chai too)
+  - Send crypto (confirm rates before depositing - **values under minimum crypto will be lost**):
+  
+    <table>
+    <tr><th>Crypto</th><th>Address</th><th>Min.Amount</th><th>Min. equiv USD</th></tr>
+    <tr><td>ETH/ERC-20</td><td>0x989f7290d5227d9d6451ab813900f1feb8a11c7b</td><td>0.00001</td><td>0.01</td></tr>
+    <tr><td>BTC</td><td>3AAQHy983Bc9dYZ9WSrehKtg3fxGx3HEKe</td><td>0.00010</td><td>1.65</td></tr>
+    <tr><td>LTC</td><td>LYiDAwKN3xUeTqWNYnVThTtYgPNbKBDfcD</td><td>0.01000</td><td>0.66</td></tr>
+    <tr><td>ATOM</td><td>cosmos1p8actjzzmxxr6dvwx3q05ykvpxyqjd2j4jn8pe</td><td>1.00</td><td>9.08</td></tr>
+    <tr><td>DASH</td><td>XoxPsd6U2xVG7gBzirpuWDbDtq5bfHdDbE</td><td>0.01</td><td>0.40</td></tr>
+    </table>
+
+- Send me a virtual coffee (I like virtual Mint Tea or Chai too)
   - Be happy and enjoy using the code.
