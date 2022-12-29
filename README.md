@@ -75,12 +75,12 @@ I'm currently working alone on this, on my spare time. If you want to help, here
   - Send crypto (confirm rates before depositing - **values under minimum crypto will be lost**):
   
     <table>
-    <tr><th>Crypto</th><th>Address</th><th>Min.Amount</th><th>Min. equiv USD</th></tr>
-    <tr><td>ETH/ERC-20</td><td>0x989f7290d5227d9d6451ab813900f1feb8a11c7b</td><td>0.00001</td><td>0.01</td></tr>
-    <tr><td>BTC</td><td>3AAQHy983Bc9dYZ9WSrehKtg3fxGx3HEKe</td><td>0.00010</td><td>1.65</td></tr>
-    <tr><td>LTC</td><td>LYiDAwKN3xUeTqWNYnVThTtYgPNbKBDfcD</td><td>0.01000</td><td>0.66</td></tr>
-    <tr><td>ATOM</td><td>cosmos1p8actjzzmxxr6dvwx3q05ykvpxyqjd2j4jn8pe</td><td>1.00</td><td>9.08</td></tr>
-    <tr><td>DASH</td><td>XoxPsd6U2xVG7gBzirpuWDbDtq5bfHdDbE</td><td>0.01</td><td>0.40</td></tr>
+    <tr><th>Crypto</th><th>Address</th><th align="center">Min.Amount</th><th align="center">~ Rates Dec.28, 2022</tr>
+    <tr><td>ETH/ERC-20</td><td>0x989f7290d5227d9d6451ab813900f1feb8a11c7b</td><td align="center">0.00001</td><td align="center">1 ETH ~ USD 1,190</td></tr>
+    <tr><td>BTC</td><td>3AAQHy983Bc9dYZ9WSrehKtg3fxGx3HEKe</td><td align="center">0.0001</td><td align="center">1 BTC ~ USD 16,528</td></tr>
+    <tr><td>LTC</td><td>LYiDAwKN3xUeTqWNYnVThTtYgPNbKBDfcD</td><td align="center">0.01</td><td align="center">1 LTC ~ USD 66</td></tr>
+    <tr><td>ATOM</td><td>cosmos1p8actjzzmxxr6dvwx3q05ykvpxyqjd2j4jn8pe</td><td align="center">1.00</td><td align="center">1 ATOM ~ USD 9</td></tr>
+    <tr><td>DASH</td><td>XoxPsd6U2xVG7gBzirpuWDbDtq5bfHdDbE</td><td align="center">0.01</td><td align="center">1 DASH ~ USD 43</td></tr>
     </table>
 
 - Send me a virtual coffee (I like virtual Mint Tea or Chai too)
