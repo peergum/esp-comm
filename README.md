@@ -1,10 +1,12 @@
 <img src="pictures/esp-comm-logo.png" width="200" alt="esp-comm logo"/>
 
-This component is a collection of objects to ease Wifi comms in projects. It's using the ESP-IDF Framework from Espressif, but this code is not connected to the Espressif company otherwise. I'm a big fan and user of ESP chips, but that's all.
+**Disclaimer:** **This code is not connected to (and even less endorsed by) the Espressif company** - I'm a big fan and user of ESP chips, but that's all.
+
+This component is a collection of objects to ease Wifi comms in projects, and it relies on the ESP-IDF Framework from Espressif. This code targets professional projects, or hobbyists who came to appreciate the ESP-IDF Framework.
 
 I created it in order not to keep reinventing the wheel each time a project needs IP features over Wifi, like a tiny web interface to set up a wifi password, TCP or UDP clients, UPnP, etc...
 
-Most of the code is mine, possibly occasionally flawed, and UPnP is adapted from [TinyUPnP](https://github.com/ofekp/TinyUPnP) which was initially written for the Arduino framework.
+Most of the code is mine, possibly occasionally flawed, and UPnP is adapted from [TinyUPnP](https://github.com/ofekp/TinyUPnP) which was initially written for the Arduino framework. If you like Arduino, great, I started on it too, but the obvious ease of use for newbies also has a bunch of downsides. Each one their own... Just don't come whining about a port to Arduino, I'm not interested: I suffered enough porting that UPnP part from Arduino to ESP-IDF, and I tend to walk forward, not backwards.
 
 <hr/>
 
