@@ -12,5 +12,6 @@ idf_component_register(SRCS "ConfigHandler.cpp"
   "SoftTimer.cpp"
   "ConfigHandler.cpp"
   "CaptivePortal.cpp"
+  "EspNow.cpp"
   REQUIRES esp_rom esp_http_client esp-tls mbedtls json esp_netif esp_wifi esp_common nvs_flash esp_http_server  app_update bootloader_support log esp_hw_support esp_common wpa_supplicant
   INCLUDE_DIRS ".")

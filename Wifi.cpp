@@ -35,10 +35,10 @@
 
 static const char *TAG = "Wifi";
 
-
 void wifiTask(void *arg) {
   wifi_mode_t startMode = *(wifi_mode_t *)(arg);
   wifi.init();
+  wifi.startEspNow();
   wifi.scanSTA();
   wifi.start(startMode);
   while (true) {
@@ -239,7 +239,7 @@ bool Wifi::init() {
  */
 bool Wifi::start(wifi_mode_t mode) {
   wifiAPConfig.ap.ssid_len = 0;
-  wifiAPConfig.ap.channel = 0;
+  wifiAPConfig.ap.channel = 1;
   wifiAPConfig.ap.authmode = _apAuthMode;
   wifiAPConfig.ap.max_connection = WIFI_MAX_AP_CONNECTIONS;
 
@@ -247,7 +247,7 @@ bool Wifi::start(wifi_mode_t mode) {
   strcpy((char *)wifiAPConfig.ap.ssid, _apSSID);
 
   wifiSTAConfig.sta.scan_method = WIFI_FAST_SCAN;
-  wifiSTAConfig.sta.channel = 0;
+  wifiSTAConfig.sta.channel = 1;
   wifiSTAConfig.sta.sort_method = WIFI_CONNECT_AP_BY_SIGNAL;
   wifiSTAConfig.sta.threshold.rssi = WIFI_MIN_RSSI;
   wifiSTAConfig.sta.threshold.authmode = _authMode;
@@ -311,36 +311,35 @@ void Wifi::event_handler(void *arg, esp_event_base_t event_base,
     ip_event_got_ip_t *event = (ip_event_got_ip_t *)event_data;
     _localIP = event->ip_info.ip.addr;
     _gatewayIP = event->ip_info.gw.addr;
-    ESP_LOGI(TAG, "got ip: %s gw: %s", _localIP.toChar(),
-             _gatewayIP.toChar());
+    ESP_LOGI(TAG, "got ip: %s gw: %s", _localIP.toChar(), _gatewayIP.toChar());
     _retry_num = 0;
     xEventGroupSetBits(_wifiEventGroup, WIFI_CONNECTED_BIT);
     _wifiState = CONNECTED;
   }
-/*   if (event_base == WIFI_EVENT && event_id == WIFI_EVENT_STA_START) {
-    esp_wifi_connect();
-    _retry_num = 0;
-  } else if (event_base == WIFI_EVENT &&
-             (event_id == WIFI_EVENT_STA_DISCONNECTED ||
-              event_id == WIFI_EVENT_STA_BEACON_TIMEOUT)) {
-    _wifiState = DISCONNECTED;
-    if (_retry_num < WIFI_MAXIMUM_RETRY) {
+  /*   if (event_base == WIFI_EVENT && event_id == WIFI_EVENT_STA_START) {
       esp_wifi_connect();
-      _retry_num++;
-      ESP_LOGI(TAG, "retry to connect to the AP");
-    } else {
-      xEventGroupSetBits(_wifiEventGroup, WIFI_FAILED_BIT);
-      _wifiState = WIFI_INCORRECT;
-    }
-    ESP_LOGI(TAG, "connect to the AP fail");
-  } else if (event_base == IP_EVENT && event_id == IP_EVENT_STA_GOT_IP) {
-    ip_event_got_ip_t *event = (ip_event_got_ip_t *)event_data;
-    ESP_LOGI(TAG, "got ip:" IPSTR, IP2STR(&event->ip_info.ip));
-    _retry_num = 0;
-    xEventGroupSetBits(_wifiEventGroup, WIFI_CONNECTED_BIT);
-    _wifiState = CONNECTED;
-  }  */else if (event_base == WIFI_EVENT &&
-             event_id == WIFI_EVENT_AP_STACONNECTED) {
+      _retry_num = 0;
+    } else if (event_base == WIFI_EVENT &&
+               (event_id == WIFI_EVENT_STA_DISCONNECTED ||
+                event_id == WIFI_EVENT_STA_BEACON_TIMEOUT)) {
+      _wifiState = DISCONNECTED;
+      if (_retry_num < WIFI_MAXIMUM_RETRY) {
+        esp_wifi_connect();
+        _retry_num++;
+        ESP_LOGI(TAG, "retry to connect to the AP");
+      } else {
+        xEventGroupSetBits(_wifiEventGroup, WIFI_FAILED_BIT);
+        _wifiState = WIFI_INCORRECT;
+      }
+      ESP_LOGI(TAG, "connect to the AP fail");
+    } else if (event_base == IP_EVENT && event_id == IP_EVENT_STA_GOT_IP) {
+      ip_event_got_ip_t *event = (ip_event_got_ip_t *)event_data;
+      ESP_LOGI(TAG, "got ip:" IPSTR, IP2STR(&event->ip_info.ip));
+      _retry_num = 0;
+      xEventGroupSetBits(_wifiEventGroup, WIFI_CONNECTED_BIT);
+      _wifiState = CONNECTED;
+    }  */
+  else if (event_base == WIFI_EVENT && event_id == WIFI_EVENT_AP_STACONNECTED) {
     wifi_event_ap_staconnected_t *event =
         (wifi_event_ap_staconnected_t *)event_data;
     ESP_LOGI(TAG, "station " MACSTR " join, AID=%d", MAC2STR(event->mac),
@@ -463,8 +462,8 @@ void Wifi::ssidList(int &cnt, char ***pLabels, char ***pValues) {
   char **values = *(pValues);
   char **labels = *(pLabels);
   cnt = 0;
-  for (int i = 0; i < _apCount; i++) {
-    if (!_apInfo[i].ssid[0] || _apInfo[i].ssid[32]!=0) {
+  for (int i = 0; i < _apCount && i < WIFI_SCAN_LIST_SIZE; i++) {
+    if (!_apInfo[i].ssid[0] || _apInfo[i].ssid[32] != 0) {
       continue;
     }
     values[cnt] = (char *)(_apInfo[i].ssid);
@@ -484,7 +483,6 @@ void Wifi::switchToSTA() {
   if (_wifiStarted) {
     esp_wifi_stop();
   }
-
 
   strcpy((char *)wifiSTAConfig.sta.ssid, _SSID);
   strcpy((char *)wifiSTAConfig.sta.password, _passwd);
@@ -561,7 +559,8 @@ IPAddress &Wifi::gatewayIP() { return _gatewayIP; }
 WifiStatus Wifi::status() { return _wifiState; }
 
 void Wifi::addPortMappingConfig(int rulePort, const char *ruleProtocol,
-                         int ruleLeaseDuration, const char *ruleFriendlyName) {
+                                int ruleLeaseDuration,
+                                const char *ruleFriendlyName) {
   upnp.addPortMappingConfig(localIP(), rulePort, ruleProtocol,
                             ruleLeaseDuration, ruleFriendlyName);
   newMapping = true;
@@ -574,11 +573,20 @@ void Wifi::checkUPnPMappings(void) {
     portMappingAdded = upnp.commitPortMappings();
     mappingTestCnt++;
 
-    if (portMappingAdded == SUCCESS || portMappingAdded == ALREADY_MAPPED || mappingTestCnt>3) {
+    if (portMappingAdded == SUCCESS || portMappingAdded == ALREADY_MAPPED ||
+        mappingTestCnt > 3) {
       newMapping = false;
       upnp.printAllPortMappings();
     }
   }
 }
+
+void Wifi::startEspNow(void) {
+  if (config) {
+    EspNow::init(config);
+  }
+}
+
+void Wifi::setConfig(Config &_config) { config = &_config; }
 
 Wifi wifi;

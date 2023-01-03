@@ -20,6 +20,7 @@
 #include "common.h"
 #include "utils.h"
 #include "UPnP.h"
+#include "EspNow.h"
 
 #define WIFI_MIN_RSSI -107
 
@@ -59,6 +60,7 @@ class Wifi {
   }
 
   bool init();
+  void setConfig(Config &config);
   void setAP(const char *ssid, const char *passwd,
              const wifi_auth_mode_t authmode = WIFI_AUTH_WPA2_PSK);
   void setSTA(const char *ssid, const char *passwd,
@@ -95,6 +97,9 @@ class Wifi {
                             const char *ruleFriendlyName);
   void checkUPnPMappings(void);
 
+  void startEspNow();
+  Config *config;
+
  private:
   static Wifi *_instance;
   EventGroupHandle_t _wifiEventGroup;
@@ -124,6 +129,7 @@ class Wifi {
   SoftTimer upnpTimer;
   bool newMapping = false;
   int mappingTestCnt = 0;
+  EspNow *espNow = NULL;
 };
 
 extern Wifi wifi;

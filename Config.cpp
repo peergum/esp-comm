@@ -53,6 +53,8 @@ cJSON *Config::getJson(void) {
         object = cJSON_CreateNumber(item.value);
         cJSON_AddItemToObject(config, item.name, object);
         break;
+      case CONFIG_INFO:
+        [[fallthrough]];
       case CONFIG_CHAR:
         object = cJSON_CreateString(item.cValue ? item.cValue : "");
         cJSON_AddItemToObject(config, item.name, object);
@@ -112,8 +114,10 @@ void Config::getFromNVS() {
     for (int i = 0; i < _numItems; i++) {
       len = 255;
       switch (_items[i].type) {
-        case CONFIG_CHAR:
         case CONFIG_INFO:
+          // info only, set in code, do not read from NVS
+          break;
+        case CONFIG_CHAR:
         case CONFIG_LIST:
           err = nvs_get_blob(h_nvs, _items[i].name, cData, &len);
           switch (err) {
