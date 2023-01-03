@@ -38,7 +38,7 @@ Additionally these classes can be of use, depending:
 
 ## Manual/Documentation
 
-See [wiki](/peergum/esp-comm/wiki)
+See [wiki](https://github.com/peergum/esp-comm/wiki)
 
 ## Examples
 
@@ -66,13 +66,22 @@ Please open relevant issues, with details. Priorities as:
 ## Help, anyone?
 
 I'm currently working alone on this, on my spare time. If you want to help, here's how:
+
 - Help fix/extend/improve code, by submitting a pull request
 - You could prefer to fork your own repo. That's fine with me, but don't come whining if this one keeps getting better and better ;-P You can be a team player, or not. Your choice, not mine. Also, sometimes people opinions and choices diverge, that's life ;)
 - Star this repo to make it more "reputable"
 - Donate? I haven't setup anything yet, but I will. In the meantime:
   - Listen to my music (search for _PeerGum_ on Spotify, Apple Music, Youtube Music, etc... ). Every listen brings me a tiny fraction of a cent. Better than nothing :D
-  - Send ETH (or ERC-20) crypto to 0x989f7290d5227d9d6451ab813900f1feb8a11c7b (min. 0.00001 ETH)
-  - Send BTC crypto to 3AAQHy983Bc9dYZ9WSrehKtg3fxGx3HEKe (Bitcoin Network, min. 0.00010 BTC)
-  - Send LTC crypto to LYiDAwKN3xUeTqWNYnVThTtYgPNbKBDfcD (Litecoin Network, min. 0.01000 LTC)
+  - Send crypto (confirm rates before depositing - **values under minimum crypto will be lost**):
+
+    <table>
+    <tr><th>Crypto</th><th>Address</th><th align="center">Min.Amount</th><th align="center">~ Rates Dec.28, 2022</tr>
+    <tr><td>ETH/ERC-20</td><td>0x989f7290d5227d9d6451ab813900f1feb8a11c7b</td><td align="center">0.00001</td><td align="center">1 ETH ~ USD 1,190</td></tr>
+    <tr><td>BTC</td><td>3AAQHy983Bc9dYZ9WSrehKtg3fxGx3HEKe</td><td align="center">0.0001</td><td align="center">1 BTC ~ USD 16,528</td></tr>
+    <tr><td>LTC</td><td>LYiDAwKN3xUeTqWNYnVThTtYgPNbKBDfcD</td><td align="center">0.01</td><td align="center">1 LTC ~ USD 66</td></tr>
+    <tr><td>ATOM</td><td>cosmos1p8actjzzmxxr6dvwx3q05ykvpxyqjd2j4jn8pe</td><td align="center">1.00</td><td align="center">1 ATOM ~ USD 9</td></tr>
+    <tr><td>DASH</td><td>XoxPsd6U2xVG7gBzirpuWDbDtq5bfHdDbE</td><td align="center">0.01</td><td align="center">1 DASH ~ USD 43</td></tr>
+    </table>
+
   - Send me a virtual coffee (I like virtual Mint Tea or Chai too)
   - Be happy and enjoy using the code.
