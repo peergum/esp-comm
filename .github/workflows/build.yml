@@ -18,8 +18,10 @@ jobs:
         submodules: 'recursive'
     - name: esp-idf build
       uses: espressif/esp-idf-ci-action@v1
-      run: /opt/esp/python_env/idf5.0_py3.8_env/bin/python -m pip install --upgrade idf-component-manager
       with:
         esp_idf_version: v5.0
         target: esp32
         path: 'examples/basic'
+        command: |
+          /opt/esp/python_env/idf5.0_py3.8_env/bin/python -m pip install --upgrade idf-component-manager
+          idf.py build
