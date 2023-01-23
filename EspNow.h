@@ -110,8 +110,8 @@ public:
   static void data_prepare(espnow_send_param_t *send_param);
   static void task(void *pvParameter);
   static void deinit(espnow_send_param_t *send_param);
-  static EspNow &instance();
-  static esp_err_t init(Config *config);
+  EspNow &instance();
+  esp_err_t init(Config *config);
 
  private:
   static EspNow *_instance;

@@ -8,6 +8,13 @@ Most of the code is mine, possibly occasionally flawed, and UPnP is adapted from
 
 <hr/>
 
+## Sponsors
+
+A big thank you to our sponsors, with a reminder you guys get top priority on new requests or bug fixes...
+- [3DprintNerd](https://github.com/3DprintNerd)
+
+<hr/>
+
 ## Preamble
 
 **This component is written for the ESP-IDF framework, version 5.0 and above**.

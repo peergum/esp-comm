@@ -47,13 +47,13 @@ void EspNow::send_cb(const uint8_t *mac_addr,
   evt.id = ESPNOW_SEND_CB;
   memcpy(send_cb->mac_addr, mac_addr, ESP_NOW_ETH_ALEN);
   send_cb->status = status;
-  if (xQueueSend(instance().s_queue, &evt, ESPNOW_MAXDELAY) != pdTRUE) {
+  if (xQueueSend(_instance->s_queue, &evt, ESPNOW_MAXDELAY) != pdTRUE) {
     ESP_LOGW(TAG, "Send send queue fail");
   }
 }
 
-void EspNow::recv_cb(const uint8_t *mac_addr, const uint8_t *data,
-                          int len) {
+void EspNow::recv_cb(const esp_now_recv_info *mac_addr, const uint8_t *data,
+                     int len) {
   espnow_event_t evt;
   espnow_event_recv_cb_t *recv_cb = &evt.info.recv_cb;
 
@@ -71,7 +71,7 @@ void EspNow::recv_cb(const uint8_t *mac_addr, const uint8_t *data,
   }
   memcpy(recv_cb->data, data, len);
   recv_cb->data_len = len;
-  if (xQueueSend(instance().s_queue, &evt, ESPNOW_MAXDELAY) != pdTRUE) {
+  if (xQueueSend(_instance->s_queue, &evt, ESPNOW_MAXDELAY) != pdTRUE) {
     ESP_LOGW(TAG, "Send receive queue fail");
   }
 }
@@ -128,8 +128,9 @@ void EspNow::data_prepare(espnow_send_param_t *send_param) {
     buf->password[0] = 0;
   } else {
     // strcpy(buf->payload, REMOTE_USB_ESPNOW_ID);
-    strcpy((char *)buf->ssid, instance().config->getStringByName("ssid"));
-    strcpy((char *)buf->password, instance().config->getStringByName("password"));
+    strcpy((char *)buf->ssid, _instance->config->getStringByName("ssid"));
+    strcpy((char *)buf->password,
+           _instance->config->getStringByName("password"));
   }
   buf->crc = esp_crc16_le(UINT16_MAX, (uint8_t const *)buf, send_param->len);
 }
@@ -156,7 +157,7 @@ void EspNow::task(void *pvParameter) {
     return;
   }
 
-  while (xQueueReceive(instance().s_queue, &evt, portMAX_DELAY) == pdTRUE) {
+  while (xQueueReceive(_instance->s_queue, &evt, portMAX_DELAY) == pdTRUE) {
     switch (evt.id) {
     case ESPNOW_SEND_CB: {
       espnow_event_send_cb_t *send_cb = &evt.info.send_cb;
@@ -286,19 +287,19 @@ esp_err_t EspNow::init(Config *_config) {
     _instance = new EspNow();
   }
 
-  instance().config = _config;
+  _instance->config = _config;
   espnow_send_param_t *send_param;
 
-  instance().s_queue = xQueueCreate(ESPNOW_QUEUE_SIZE, sizeof(espnow_event_t));
-  if (instance().s_queue == NULL) {
+  _instance->s_queue = xQueueCreate(ESPNOW_QUEUE_SIZE, sizeof(espnow_event_t));
+  if (_instance->s_queue == NULL) {
     ESP_LOGE(TAG, "Create mutex fail");
     return ESP_FAIL;
   }
 
   /* Initialize ESPNOW and register sending and receiving callback function. */
   ESP_ERROR_CHECK(esp_now_init());
-  ESP_ERROR_CHECK(esp_now_register_send_cb(send_cb));
-  ESP_ERROR_CHECK(esp_now_register_recv_cb(recv_cb));
+  ESP_ERROR_CHECK(esp_now_register_send_cb(_instance->send_cb));
+  ESP_ERROR_CHECK(esp_now_register_recv_cb(_instance->recv_cb));
 #if CONFIG_ESP_WIFI_STA_DISCONNECTED_PM_ENABLE
   ESP_ERROR_CHECK(esp_now_set_wake_window(65535));
 #endif
@@ -310,7 +311,7 @@ esp_err_t EspNow::init(Config *_config) {
       (esp_now_peer_info_t *)malloc(sizeof(esp_now_peer_info_t));
   if (peer == NULL) {
     ESP_LOGE(TAG, "Malloc peer information fail");
-    vSemaphoreDelete(instance().s_queue);
+    vSemaphoreDelete(_instance->s_queue);
     esp_now_deinit();
     return ESP_FAIL;
   }
@@ -326,7 +327,7 @@ esp_err_t EspNow::init(Config *_config) {
   send_param = (espnow_send_param_t *)malloc(sizeof(espnow_send_param_t));
   if (send_param == NULL) {
     ESP_LOGE(TAG, "Malloc send parameter fail");
-    vSemaphoreDelete(instance().s_queue);
+    vSemaphoreDelete(_instance->s_queue);
     esp_now_deinit();
     return ESP_FAIL;
   }
@@ -342,14 +343,14 @@ esp_err_t EspNow::init(Config *_config) {
   if (send_param->buffer == NULL) {
     ESP_LOGE(TAG, "Malloc send buffer fail");
     free(send_param);
-    vSemaphoreDelete(instance().s_queue);
+    vSemaphoreDelete(_instance->s_queue);
     esp_now_deinit();
     return ESP_FAIL;
   }
   memcpy(send_param->dest_mac, s_broadcast_mac, ESP_NOW_ETH_ALEN);
   data_prepare(send_param);
 
-  xTaskCreate(instance().task, "espnow_task", 4096, send_param, 4, NULL);
+  xTaskCreate(_instance->task, "espnow_task", 4096, send_param, 4, NULL);
 
   return ESP_OK;
 }
@@ -357,7 +358,7 @@ esp_err_t EspNow::init(Config *_config) {
 void EspNow::deinit(espnow_send_param_t *send_param) {
   free(send_param->buffer);
   free(send_param);
-  vSemaphoreDelete(instance().s_queue);
+  vSemaphoreDelete(_instance->s_queue);
   esp_now_deinit();
 }
 

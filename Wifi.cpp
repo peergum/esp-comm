@@ -583,7 +583,7 @@ void Wifi::checkUPnPMappings(void) {
 
 void Wifi::startEspNow(void) {
   if (config) {
-    EspNow::init(config);
+    espNow->init(config);
   }
 }
 
