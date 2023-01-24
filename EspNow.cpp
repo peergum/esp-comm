@@ -34,7 +34,7 @@ EspNow::~EspNow() {
 /* ESPNOW sending or receiving callback function is called in WiFi task.
  * Users should not do lengthy operations from this task. Instead, post
  * necessary data to a queue and handle it from a lower priority task. */
-void EspNow::send_cb(const uint8_t *mac_addr,
+void EspNow::sendCallback(const uint8_t *mac_addr,
                           esp_now_send_status_t status) {
   espnow_event_t evt;
   espnow_event_send_cb_t *send_cb = &evt.info.send_cb;
@@ -52,7 +52,7 @@ void EspNow::send_cb(const uint8_t *mac_addr,
   }
 }
 
-void EspNow::recv_cb(const esp_now_recv_info *mac_addr, const uint8_t *data,
+void EspNow::receiveCallback(const esp_now_recv_info *mac_addr, const uint8_t *data,
                      int len) {
   espnow_event_t evt;
   espnow_event_recv_cb_t *recv_cb = &evt.info.recv_cb;
@@ -298,8 +298,8 @@ esp_err_t EspNow::init(Config *_config) {
 
   /* Initialize ESPNOW and register sending and receiving callback function. */
   ESP_ERROR_CHECK(esp_now_init());
-  ESP_ERROR_CHECK(esp_now_register_send_cb(_instance->send_cb));
-  ESP_ERROR_CHECK(esp_now_register_recv_cb(_instance->recv_cb));
+  ESP_ERROR_CHECK(esp_now_register_send_cb(_instance->sendCallback));
+  ESP_ERROR_CHECK(esp_now_register_recv_cb(_instance->receiveCallback));
 #if CONFIG_ESP_WIFI_STA_DISCONNECTED_PM_ENABLE
   ESP_ERROR_CHECK(esp_now_set_wake_window(65535));
 #endif

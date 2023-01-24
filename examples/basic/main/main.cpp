@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-#include "wifi.h"
+#include "Wifi.h"
 #include "TCPClient.h"
 #include "UDPClient.h"
 #include "UPnP.h"
@@ -29,52 +29,8 @@ TaskHandle_t xWifiTask;
 
 TCPClient tcpClient;
 UDPClient udpClient;
-UPnP uPnP(20000);
 
-void wifiTask(void *arg) {
-  assert(wifi.init());
-  assert(wifi.start());
-  // while (wifi.status() != WifiStatus::CONNECTED) {
-  //   vTaskDelay(pdMS_TO_TICKS(1000));
-  // }
-
-  // assert(tcpClient.connect(IPAddress(192,168,2,1),80));
-  // size_t len = sizeof(buffer);
-  // const char *test = "HTTP/1.1 GET http:192.179.2.1\r\n\r\n";
-  // int ret = tcpClient.sendAndReceive((uint8_t *)test, strlen(test), buffer, len);
-  // while (ret>0) {
-  //   len = sizeof(buffer);
-  //   ret = tcpClient.read(buffer, len);
-  // }
-  // tcpClient.close();
-
-  portMappingResult portMappingAdded;
-  uPnP.addPortMappingConfig(wifi.localIP(), LISTEN_PORT, RULE_PROTOCOL_TCP,
-                                LEASE_DURATION, FRIENDLY_NAME);
-  while (true) {
-    portMappingAdded = uPnP.commitPortMappings();
-
-    if (portMappingAdded == SUCCESS || portMappingAdded == ALREADY_MAPPED) {
-      break;
-    }
-    // for debugging, you can see this in your router too under forwarding or
-    // UPnP
-    // uPnP.printAllPortMappings();
-    ESP_LOGE(TAG,"This was printed because adding the required port mapping failed");
-    delay(30000);  // 30 seconds before trying again
-  }
-
-  uPnP.printAllPortMappings();
-
-  // udpClient.begin(IPAddress(192, 168, 2, 1), 53);
-  // len = sizeof(buffer);
-  // const char *test2 = "Message from ESP32";
-  // udpClient.beginPacket();
-  // udpClient.write(test2, strlen(test2));
-  // udpClient.endPacket();
-  // udpClient.stop();
-  vTaskDelete(xWifiTask);
-}
+extern void wifiTask(void *arg);
 
 void app_main(void) {
   esp_log_level_set("*", ESP_LOG_INFO);
