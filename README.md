@@ -1,3 +1,5 @@
+<span style="float: right">[![esp-comm build](https://github.com/peergum/esp-comm/actions/workflows/build.yml/badge.svg)](https://github.com/peergum/esp-comm/actions/workflows/build.yml)</span>
+
 <img src="pictures/esp-comm-logo.png" width="200" alt="esp-comm logo"/>
 
 **Disclaimer:** **This code is not connected to (and even less endorsed by) the Espressif company** - I'm a big fan and user of ESP chips, but that's all.
