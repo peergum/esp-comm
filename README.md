@@ -95,3 +95,13 @@ I'm currently working alone on this, on my spare time. If you want to help, here
 
   - Send me a virtual coffee (I like virtual Mint Tea or Chai too)
   - Be happy and enjoy using the code.
+
+## LICENSE
+
+This library is released under [GPLv3 License](/LICENSE)
+
+Copyright (c) 2023, PeerGum. Some Parts derived from [TinyUPnP](https://github.com/ofekp/TinyUPnP) and (c) their author.
+
+## WARNING/DISCLAIMER
+
+Under the GPLv3 license, you're are obligated to disclose the source of your work if it includes this library, modified or not. If you don't, and try to patent your product, your patent could be invalidated by law. Either you share too, or you write your own code, there's no free lunch.
