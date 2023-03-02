@@ -6,7 +6,7 @@
 #include "UPnP.h"
 #include "esp_err.h"
 #include "nvs_flash.h"
-#include "freertos/freeRTOS.h"
+#include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include <cstring>
 #include "esp_log.h"
