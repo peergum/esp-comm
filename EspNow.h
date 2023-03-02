@@ -120,7 +120,7 @@ public:
   EspNow();
   ~EspNow();
   static void sendCallback(const uint8_t *mac_addr, esp_now_send_status_t status);
-  static void receiveCallback(const esp_now_recv_info *mac_addr,
+  static void receiveCallback(const uint8_t *mac_addr,
                               const uint8_t *data, int len);
   static int data_parse(uint8_t *data, uint16_t data_len, uint8_t *state,
                         uint16_t *seq, int *magic);

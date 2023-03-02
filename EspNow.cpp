@@ -68,7 +68,7 @@ void EspNow::sendCallback(const uint8_t *mac_addr,
   }
 }
 
-void EspNow::receiveCallback(const esp_now_recv_info *mac_addr, const uint8_t *data,
+void EspNow::receiveCallback(const uint8_t *mac_addr, const uint8_t *data,
                      int len) {
   espnow_event_t evt;
   espnow_event_recv_cb_t *recv_cb = &evt.info.recv_cb;
